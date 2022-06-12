@@ -1,0 +1,136 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using SiteManagementProject.BLL;
+using SiteManagementProject.DAL.Abstract;
+using SiteManagementProject.DAL.Concrete.Entityframework.Context;
+using SiteManagementProject.DAL.Concrete.Entityframework.Repository;
+using SiteManagementProject.DAL.Concrete.Entityframework.UnitOfWork;
+using SiteManagementProject.INTERFACE;
+using SiteManagementProject.WEBAPI.ChatService;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SiteManagementProject.WEBAPI
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder
+                    .WithOrigins("http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+                }));
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdminRole",
+                    policy => policy.RequireClaim("username", "admin"));
+            });
+
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.SaveToken = false;
+                    cfg.RequireHttpsMetadata = false;
+
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidIssuer = Configuration["Tokens:Issuer"],
+                        ValidAudience = Configuration["Tokens:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"])),
+                        RequireSignedTokens = true,
+                        RequireExpirationTime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+            services.AddDbContext<SiteManagementProjectContext>();
+            services.AddScoped<DbContext, SiteManagementProjectContext>();
+
+            services.AddScoped<IAdminService, AdminManager>();
+            services.AddScoped<IUserService, UserManager>();
+            services.AddScoped<IApartmentService, ApartmentManager>();
+            services.AddScoped<IBillService, BillManager>();
+            services.AddScoped<IFlatTypeService, FlatTypeManager>();
+            services.AddScoped<IFlatService, FlatManager>();
+            services.AddScoped<ISiteService, SiteManager>();
+
+            services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IApartmentRepository, ApartmentRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IFlatTypeRepository, FlatTypeRepository>();
+            services.AddScoped<IFlatRepository, FlatRepository>();
+            services.AddScoped<ISiteRepository, SiteRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SiteManagementProject.WEBAPI", Version = "v1" });
+            });
+
+            services.AddSingleton<IDictionary<string, UserConnection>>(opts => new Dictionary<string, UserConnection>());
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SiteManagementProject.WEBAPI v1"));
+            }
+
+            app.UseWebSockets();
+
+            app.UseRouting();
+
+            app.UseCors("CorsPolicy");
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHub>("/admin");
+                endpoints.MapHub<ChatHub>("/user");
+                endpoints.MapControllers();
+            });
+        }
+    }
+}
