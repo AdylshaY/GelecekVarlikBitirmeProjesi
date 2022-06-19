@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login";
 import "./App.css";
 import AdminPanel from "./pages/AdminPanel/AdminPanel";
 import UserPanel from "./pages/UserPanel/UserPanel";
+import AdminMessages from "./components/AdminsPageComponents/AdminMessagesManager/AdminMessages";
 
 function App() {
   return (

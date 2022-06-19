@@ -37,7 +37,11 @@ function AdminPanel() {
       </>
     );
   } else {
-    return <h1 className="d-flex justify-content-center m-5">YOU SHOULD NOT BE HERE</h1>;
+    return (
+      <h1 className="d-flex justify-content-center m-5">
+        YOU SHOULD NOT BE HERE
+      </h1>
+    );
   }
 }
 

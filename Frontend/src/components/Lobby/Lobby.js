@@ -1,9 +1,12 @@
+import { useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const Lobby = ({ joinRoom }) => {
-  const [room, setRoom] = useState();
+const Lobby = ({ joinRoom, selectedUserMail, setSelectedUserMail }) => {
+  const [room, setRoom] = useState(selectedUserMail);
 
   const email = JSON.parse(localStorage.getItem("user")).email;
+
+  const navigate = useNavigate();
 
   return (
     <form
@@ -24,16 +27,18 @@ const Lobby = ({ joinRoom }) => {
           type="text"
           className="form-control mb-3"
           placeholder="Kullanıcı Adı"
-          onChange={(e) => setRoom(e.target.value)}
+          value={room}
+          disabled={true}
         />
       </div>
       <div className="d-flex justify-content-center">
-        <button
-          className="btn btn-success w-100"
-          type="submit"
-          disabled={!room}
-        >
+        <button className="btn btn-success w-100" type="submit">
           Katıl
+        </button>
+      </div>
+      <div className="d-flex justify-content-center">
+        <button className="btn btn-danger w-100 mt-2" type="button" onClick={() => setSelectedUserMail()}>
+          Geri
         </button>
       </div>
     </form>

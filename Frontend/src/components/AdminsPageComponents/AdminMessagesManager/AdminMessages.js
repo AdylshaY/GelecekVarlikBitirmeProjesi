@@ -7,12 +7,14 @@ import {
 import Lobby from "../../Lobby/Lobby";
 import ChatContainer from "../../ChatContainer/ChatContainer";
 
-const App = () => {
+const AdminMessages = ({
+  selectedUserMail,
+  setComponent,
+  setSelectedUserMail,
+}) => {
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
-
-  const user = JSON.parse(localStorage.getItem("user"));
 
   const joinRoom = async (username, room) => {
     try {
@@ -67,7 +69,11 @@ const App = () => {
       <h1 className="text-center">Mesajlar</h1>
       <div className="d-flex justify-content-center mt-4">
         {!connection ? (
-          <Lobby joinRoom={joinRoom} selectedUserMail={user.email} />
+          <Lobby
+            joinRoom={joinRoom}
+            selectedUserMail={selectedUserMail}
+            setSelectedUserMail={setSelectedUserMail}
+          />
         ) : (
           <ChatContainer
             sendMessage={sendMessage}
@@ -81,4 +87,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default AdminMessages;

@@ -16,6 +16,7 @@ namespace SiteManagementProject.ENTITY.Dto
         public int FlatNo { get; set; }
         public int FlatTypeId { get; set; }
         public virtual ICollection<Bill> Bills { get; set; }
+        public virtual Apartment Apartments { get; set; }
 
     }
 }

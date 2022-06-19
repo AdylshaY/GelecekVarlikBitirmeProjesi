@@ -1,4 +1,5 @@
 ﻿using SiteManagementProject.ENTITY.Base;
+using SiteManagementProject.ENTITY.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace SiteManagementProject.ENTITY.Dto
         public string Name { get; set; }
         public string FlatCount { get; set; }   
         public int SiteId { get; set; }
+        public virtual Site Site { get; set; }
     }
 }

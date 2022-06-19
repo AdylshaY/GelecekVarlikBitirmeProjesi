@@ -74,12 +74,24 @@ Projede JWT kullanıldı. JWT içerisine claimlenen kullanıcı adı ile api üz
 
 ![Kullanici Kredi Kartlari](/Screenshots/user_kredikartlar%C4%B1.png)
 
+- Admin mesajlar paneli:
+
+![Admin Mesajlar Paneli](/Screenshots/admin_mesajlar.png)
+
+- Admin mesajlara giriş ekranı:
+
+![Admin Mesajlar Paneli](/Screenshots/admin_mesajlar2.png)
+
+- Admin chat ekranı:
+
+![Admin Mesajlar Paneli](/Screenshots/admin_mesajlar3.png)
+
 ### Projenin Çalıştırılması 
 
 Projeyi çalıştırmak için Visual Studio üzerinden solution seçeneklerinden Multiple Startup seçilmeli ve 2 adet api işaretlenmelidir.
 
 Daha sonra proje çalıştırılır. İlk sayfadan giriş butonuna tıklanarak giriş yapma ekranına gidilir. Kullanıcı veya Admin olma durumuna göre ilgili seçim yapılır ve bilgiler girilir. 
 
-Admin olarak giriş yapıldıysa blok, apartman, daire, kullanıcı ve fatura ekleme, düzenleme ve silme işlemleri yapabilir. Kullanıcı mailini girerek canlı mesajlaşma odasından görüşme gerçekleştirilebilir.
+Admin olarak giriş yapıldıysa blok, apartman, daire, kullanıcı ve fatura ekleme, düzenleme ve silme işlemleri yapabilir. Kullanıcı ile canlı mesajlaşma gerçekleştirilebilir.
 
 Kullanıcı olarak giriş yapıldıysa kendine ait daireleri ve faturaları görebilir. Kendisi kredi kartı kaydı oluşturabilir ve bunları silebilir. Yönetici ile canlı mesajlaşma yapabilir.

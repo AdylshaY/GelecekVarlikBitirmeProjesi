@@ -18,7 +18,7 @@ namespace SiteManagementProject.DAL.Concrete.Entityframework.Repository
         public List<Flat> GetUsersFlats(int id)
         {
             var dbSet = context.Set<User>();
-            var flats = dbSet.Where(a => a.Id == id).SelectMany(a => a.Flats).ToList();
+            var flats = dbSet.Where(a => a.Id == id).SelectMany(a => a.Flats).Include(i => i.Apartments).ThenInclude(i => i.Site).Include(i => i.Bills).OrderBy(i => i.Apartments.Site).ToList();
             return flats;
         }
 

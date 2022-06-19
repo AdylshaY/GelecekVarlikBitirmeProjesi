@@ -6,7 +6,7 @@ import UserCreditCardsManager from "../../components/UsersPageComponents/UserCre
 import UserMessagesManager from "../../components/UsersPageComponents/UserMessagesManager/UserMessagesManager";
 
 function UserPanel() {
-  const [component, setComponent] = useState("Başlangıç");
+  const [component, setComponent] = useState("Dairelerim");
 
   const user = JSON.parse(localStorage.getItem("user"));
   if (user) {
