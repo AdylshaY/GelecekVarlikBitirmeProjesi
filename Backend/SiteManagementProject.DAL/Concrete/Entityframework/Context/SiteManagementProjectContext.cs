@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 using SiteManagementProject.ENTITY.Models;
 
 #nullable disable
@@ -9,14 +10,16 @@ namespace SiteManagementProject.DAL.Concrete.Entityframework.Context
 {
     public partial class SiteManagementProjectContext : DbContext
     {
-        public SiteManagementProjectContext()
+        IConfiguration configuration;
+        public SiteManagementProjectContext(IConfiguration configuration)
         {
+            this.configuration = configuration;
         }
 
-        public SiteManagementProjectContext(DbContextOptions<SiteManagementProjectContext> options)
-            : base(options)
-        {
-        }
+        //public SiteManagementProjectContext(DbContextOptions<SiteManagementProjectContext> options)
+        //    : base(options)
+        //{
+        //}
 
         public virtual DbSet<Admin> Admins { get; set; }
         public virtual DbSet<Apartment> Apartments { get; set; }
@@ -30,8 +33,8 @@ namespace SiteManagementProject.DAL.Concrete.Entityframework.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=ADYLSHA-PC;Database=SiteManagementProject;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("SqlServer"));
+                // optionsBuilder.UseSqlServer("Server=ADYLSHA-PC;Database=SiteManagementProject;Trusted_Connection=True;");
             }
         }
 

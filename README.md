@@ -49,6 +49,11 @@ Entity Layer'da veritabanında bulunan tablolara ait modeller ve bu modellere ai
 
 Projede JWT kullanıldı. JWT içerisine claimlenen kullanıcı adı ile api üzerinde controllerlara olan erişim yönetici ve kullanıcı olma durumuna göre sınırlandırıldı. Startup içerisinde policy kullanılarak yapıldı.
 
+### Veritabanı Hakkında:
+- Veritabanı diyagramı:
+
+![Giriş Ekranı](/Screenshots/db_diagram.png)
+
 ### Arayüzelere Ait Görüntüler: 
 - Uygulamanın açılış ekranı:
 
